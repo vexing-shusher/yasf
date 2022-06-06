@@ -1,35 +1,17 @@
 import torch
 from torch.utils.data import Dataset
-import numpy as np
 
-class IdentityTransform(object):
-    
-    def __init__(self):
-        pass
-        
-    def __call__(self, x):
-        return x
+import numpy as np
         
     
 class DataWrapper(Dataset):
     
-    def __init__(self, x, y, sample_transform=None, target_transform=None, global_transform=None):
+    def __init__(self, x, y, sample_transform=lambda x : x, target_transform=lambda x : x, global_transform=lambda x,y: (x,y) ):
         
-        if sample_transform:
-            self.sample_transform = sample_transform
-        else:
-            self.sample_transform = IdentityTransform()
-        
-        if target_transform:
-            self.target_transform = target_transform
-        else:
-            self.target_transform = IdentityTransform()
-        
-        if global_transform:
-            #global_transfrom -- any function acting on the whole dataset
-            self.ds = global_transform(x,y)
-        else:
-            self.ds = (x,y)
+        self.sample_transform = sample_transform
+        self.target_transform = target_transform
+        #global_transfrom -- any function acting on the whole dataset
+        self.ds = global_transform(x,y)
             
     def __len__(self):
         return len(self.ds[0])
