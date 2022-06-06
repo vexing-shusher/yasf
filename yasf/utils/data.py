@@ -10,7 +10,7 @@ class DataWrapper(Dataset):
         
         self.sample_transform = sample_transform
         self.target_transform = target_transform
-        #global_transfrom -- any function acting on the whole dataset
+        #global_transform -- any function acting on the whole dataset
         self.ds = global_transform(x,y)
             
     def __len__(self):
