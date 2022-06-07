@@ -6,12 +6,23 @@ import numpy as np
     
 class DataWrapper(Dataset):
     
-    def __init__(self, x, y, sample_transform=lambda x : x, target_transform=lambda x : x, global_transform=lambda x,y: (x,y) ):
+    def __init__(self, x, y, sample_transform = None, target_transform=None, global_transform=None):
         
+      if sample_transform:  
         self.sample_transform = sample_transform
+      else:
+        self.sample_transform = lambda x : x
+
+      if sample_transform:  
         self.target_transform = target_transform
-        #global_transform -- any function acting on the whole dataset
-        self.ds = global_transform(x,y)
+      else:
+        self.target_transform = lambda x : x
+
+      #global_transfrom -- any function acting on the whole dataset
+      if global_transform:
+        self.ds = self.global_transform(x,y)
+      else:
+        self.ds = (x,y)
             
     def __len__(self):
         return len(self.ds[0])
